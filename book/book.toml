@@ -5,4 +5,4 @@ language = "zh-CN"
 src = "src"
 
 [output.html]
-git-repository-url = "https://github.com/AA4C-ORG/aa4c"
+git-repository-url = "https://github.com/AA4C-ORG/AA4C"

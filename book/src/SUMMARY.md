@@ -1,7 +1,6 @@
 # Summary
 
 [介绍](README.md)
-- [第二代重建方案](rebuild.md)
 
 # 产品
 
@@ -46,5 +45,6 @@
 - [安全与威胁模型](security.md)
 - [工程规范](engineering.md)
 - [路线图](roadmap.md)
+- [第二代重建方案](rebuild.md)
 - [从第一代学到的](lessons.md)
 - [待细化的问题](open-questions.md)

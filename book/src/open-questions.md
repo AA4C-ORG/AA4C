@@ -153,7 +153,7 @@ iOS 不允许 App 在后台长期监听。「手机放口袋里，电脑发过�
 
 ### 19. 第一代仓库如何处理
 
-**倾向**：先把 `HuoTaoCN/AA4C` 改名为 `aa4c-legacy`，再转移到 `AA4C-ORG` 并归档；这样不与组织下的新 `aa4c` 同名，
+**倾向**：把第一代仓库改名后转移到 `AA4C-ORG` 并归档，避免与主仓库同名，
 并保留历史、star、Release 与旧地址跳转。转移要组织方接受，执行前还要检查 fork、Pages、Actions secrets 与包发布权限。
 
 ### 20. redb 还是 fjall
