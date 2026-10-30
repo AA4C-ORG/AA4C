@@ -13,3 +13,4 @@ workspace = true
 
 [dependencies]
 aa4c-engine.workspace = true
+serde_json.workspace = true
