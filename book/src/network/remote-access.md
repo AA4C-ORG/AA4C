@@ -1,6 +1,6 @@
 # 远程访问：SSH 与远程桌面
 
-> 决定见 [ADR 0017](../../../docs/adr/0017-remote-access-by-service-forwarding.md)（提议中）。属于 v1.0 的 P1 范围，排在路线图 M6。
+> 决定见 [ADR 0017](../../../docs/adr/0017-remote-access-by-service-forwarding.md)。属于 v1.0 的 P1 范围，排在路线图 M6。
 
 [场景 6](../product/users.md) 里的人想要的不只是取文件：在单位 SSH 到家里的 NAS，在外面远程控制家里的电脑。今天的做法是 Tailscale（要账号），
 或 SubnetDesk 这类局域网远程桌面再加一层 VPN。AA4C 已经有它们缺的两样东西：不靠账号的「我的设备」身份，和能穿过 NAT 的连接阶梯。
@@ -31,6 +31,9 @@
 转发不需要新的连接层：它只是同一条端到端 QUIC 连接里的另一种流，沿用[连接阶梯](ladder.md)、[中转站](relay.md)与设备认证，也不新增依赖。
 经中转站时远程桌面会明显变慢，界面照常显示当前档位。
 
+能连上的范围与连接阶梯完全相同：直连可达，或有可用的自建中转站时才行；封 UDP 的网络目前连不上
+（[待细化的问题](../open-questions.md)第 10 条）。连不上时按[连接阶梯](ladder.md)「连不上时」一节说明原因，不承诺「任何网络都能连」。
+
 ## 线路
 
 在[线路协议](wire.md)之上增加一条控制消息：
@@ -51,7 +54,7 @@ Host nas
   ProxyCommand aa4c connect nas ssh
 ```
 
-之后 `ssh nas` 在任何网络下都能用。`aa4c ssh-config` 把我所有开放了 SSH 的设备打印成这样的配置段，由人自己决定是否写进文件。
+之后在单位或外面，只要连接阶梯能连上那台 NAS，`ssh nas` 就能用。`aa4c ssh-config` 把我所有开放了 SSH 的设备打印成这样的配置段，由人自己决定是否写进文件。
 主机密钥校验与登录认证仍由 SSH 负责，AA4C 只是运输。
 
 ## 远程桌面
