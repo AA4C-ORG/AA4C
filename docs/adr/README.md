@@ -23,7 +23,7 @@
 | [0003](0003-stranger-send-and-receive-mode.md) | 附近的人一次性发送与接收模式 | 已接受 |
 | [0004](0004-quic-only.md) | 只用 QUIC | 已接受 |
 | [0005](0005-raw-public-keys.md) | 原始公钥代替 X.509 | 提议中（待 M0 实验）|
-| [0006](0006-redb-not-sqlite.md) | redb + config.toml 代替 SQLite | 提议中 |
+| [0006](0006-redb-not-sqlite.md) | redb + config.toml 代替 SQLite | 已接受（附 M0 验证条件）|
 | [0007](0007-json-control-messages.md) | 线路控制消息用 JSON | 已接受 |
 | [0008](0008-wasm-plugins-not-lua.md) | 插件用 wasmi，不用 Lua | 已接受 |
 | [0009](0009-no-downloader-no-ai.md) | 下载器与 AI 不在范围内 | 已接受 |
@@ -37,3 +37,4 @@
 | [0017](0017-remote-access-by-service-forwarding.md) | 远程访问用服务转发，不做插件、不做虚拟网卡 | 已接受 |
 | [0018](0018-agents-act-directly-across-my-devices.md) | Agent 在我的设备之间直接动手 | 已接受 |
 | [0019](0019-apache-2-license.md) | 许可证用 Apache-2.0 | 已接受 |
+| [0020](0020-cap-std-for-granted-roots.md) | 授予的文件根用 cap-std，不自研 openat 沙箱 | 已接受（附 M0 验证条件）|

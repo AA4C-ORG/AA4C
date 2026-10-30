@@ -1,6 +1,6 @@
 # 存储
 
-> 决定见 [ADR 0006](../../../docs/adr/0006-redb-not-sqlite.md)（提议中）。
+> 决定见 [ADR 0006](../../../docs/adr/0006-redb-not-sqlite.md)（已接受，附 M0 验证条件）。
 
 ## 数据目录
 

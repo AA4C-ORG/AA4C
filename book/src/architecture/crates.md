@@ -45,7 +45,8 @@ L0 与 `aa4c-id` 是纯计算，没有 I/O 和时钟；`aa4c-state` 只碰本地
 | 异步 | tokio（裁剪 features）| — |
 | 签名 / 哈希 | ed25519-dalek、blake3 | — |
 | 发现 | 自写组播信标（socket2；默认加密，见 ADR 0015）| mdns-sd |
-| 状态 | redb | rusqlite（SQLite C 源码）|
+| 状态 | redb（[ADR 0006](../../../docs/adr/0006-redb-not-sqlite.md)）| rusqlite（SQLite C 源码）、fjall（留给将来的 `folder_index`）|
+| 授予的文件根 | cap-std + cap-fs-ext（[ADR 0020](../../../docs/adr/0020-cap-std-for-granted-roots.md)）| 自研 `openat` 沙箱、`canonicalize` 后普通打开 |
 | 配置 | toml + serde | — |
 | 线路消息 | serde_json | bincode 1 |
 | 端口映射 | 自写最小 UPnP IGD 客户端 | 带完整 HTTP 栈的库 |
