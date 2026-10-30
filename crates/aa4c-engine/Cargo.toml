@@ -1,0 +1,21 @@
+[package]
+name = "aa4c-engine"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+aa4c-types.workspace = true
+aa4c-wire.workspace = true
+aa4c-id.workspace = true
+aa4c-state.workspace = true
+aa4c-net.workspace = true
+aa4c-files.workspace = true
+aa4c-plugins.workspace = true

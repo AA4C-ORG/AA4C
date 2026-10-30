@@ -1,0 +1,16 @@
+[package]
+name = "aa4c-state"
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+aa4c-types.workspace = true
+aa4c-id.workspace = true

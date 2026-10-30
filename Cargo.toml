@@ -1,0 +1,48 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/aa4c-types",
+    "crates/aa4c-wire",
+    "crates/aa4c-id",
+    "crates/aa4c-state",
+    "crates/aa4c-net",
+    "crates/aa4c-files",
+    "crates/aa4c-plugins",
+    "crates/aa4c-engine",
+    "apps/aa4c",
+    "apps/aa4c-desktop",
+    "ffi/aa4c-mobile",
+    "xtask",
+]
+
+[workspace.package]
+version = "0.0.0"
+edition = "2024"
+rust-version = "1.88"
+license = "Apache-2.0"
+repository = "https://github.com/AA4C-ORG/AA4C"
+authors = ["AA4C <dev@aa4c.com>"]
+publish = false
+
+[workspace.dependencies]
+aa4c-types = { path = "crates/aa4c-types" }
+aa4c-wire = { path = "crates/aa4c-wire" }
+aa4c-id = { path = "crates/aa4c-id" }
+aa4c-state = { path = "crates/aa4c-state" }
+aa4c-net = { path = "crates/aa4c-net" }
+aa4c-files = { path = "crates/aa4c-files" }
+aa4c-plugins = { path = "crates/aa4c-plugins" }
+aa4c-engine = { path = "crates/aa4c-engine" }
+
+[workspace.lints.rust]
+unsafe_code = "forbid"
+missing_debug_implementations = "warn"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+panic = "deny"
+unreachable = "deny"
+todo = "deny"
+unimplemented = "deny"
+indexing_slicing = "deny"
