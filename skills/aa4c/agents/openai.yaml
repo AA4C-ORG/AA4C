@@ -1,0 +1,4 @@
+interface:
+  display_name: "AA4C"
+  short_description: "Use AA4C to send and receive files safely"
+  default_prompt: "Use $aa4c to send this file to one of my devices."

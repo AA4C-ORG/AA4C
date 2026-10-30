@@ -1,0 +1,8 @@
+[book]
+title = "AA4C 设计与使用"
+authors = ["AA4C <dev@aa4c.com>"]
+language = "zh-CN"
+src = "src"
+
+[output.html]
+git-repository-url = "https://github.com/AA4C-ORG/aa4c"
