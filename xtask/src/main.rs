@@ -21,7 +21,7 @@ const LAYERS: &[(&str, u8)] = &[
 ];
 
 /// 不属于产品分层的开发工具与 M0 实验（实验结论写回 ADR 后删除）。
-const TOOLS: &[&str] = &["xtask", "raw-quic"];
+const TOOLS: &[&str] = &["xtask", "raw-quic", "beacon-exp"];
 
 /// 界面相关的库只许出现在 L5。
 const L5_ONLY_DEPS: &[&str] = &["egui", "eframe", "slint", "uniffi", "rmcp"];

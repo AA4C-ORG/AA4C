@@ -14,6 +14,7 @@ members = [
     "ffi/aa4c-mobile",
     "xtask",
     "experiments/raw-quic",
+    "experiments/beacon",
 ]
 
 [workspace.package]
