@@ -20,8 +20,8 @@ const LAYERS: &[(&str, u8)] = &[
     ("aa4c-mobile", 5),
 ];
 
-/// 不属于产品分层的开发工具。
-const TOOLS: &[&str] = &["xtask"];
+/// 不属于产品分层的开发工具与 M0 实验（实验结论写回 ADR 后删除）。
+const TOOLS: &[&str] = &["xtask", "raw-quic"];
 
 /// 界面相关的库只许出现在 L5。
 const L5_ONLY_DEPS: &[&str] = &["egui", "eframe", "slint", "uniffi", "rmcp"];

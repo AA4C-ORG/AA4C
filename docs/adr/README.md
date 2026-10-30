@@ -22,7 +22,7 @@
 | [0002](0002-person-device-contact-space.md) | 人 · 设备 · 联系人 · 空间，不要账号 | 已接受 |
 | [0003](0003-stranger-send-and-receive-mode.md) | 附近的人一次性发送与接收模式 | 已接受 |
 | [0004](0004-quic-only.md) | 只用 QUIC | 已接受 |
-| [0005](0005-raw-public-keys.md) | 原始公钥代替 X.509 | 提议中（待 M0 实验）|
+| [0005](0005-raw-public-keys.md) | 原始公钥代替 X.509 | 已接受（macOS 实测，三平台待 CI）|
 | [0006](0006-redb-not-sqlite.md) | redb + config.toml 代替 SQLite | 已接受（附 M0 验证条件）|
 | [0007](0007-json-control-messages.md) | 线路控制消息用 JSON | 已接受 |
 | [0008](0008-wasm-plugins-not-lua.md) | 插件用 wasmi，不用 Lua | 已接受 |

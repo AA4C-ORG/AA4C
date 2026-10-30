@@ -1,0 +1,19 @@
+[package]
+name = "raw-quic"
+description = "M0 experiment (ADR 0005): QUIC handshake with Ed25519 raw public keys."
+version.workspace = true
+edition.workspace = true
+rust-version.workspace = true
+license.workspace = true
+repository.workspace = true
+authors.workspace = true
+publish.workspace = true
+
+[lints]
+workspace = true
+
+[dependencies]
+quinn = { version = "0.11", default-features = false, features = ["runtime-tokio", "rustls-ring"] }
+rustls = { version = "0.23", default-features = false, features = ["ring", "std", "tls12"] }
+ring = "0.17"
+tokio = { version = "1", features = ["rt-multi-thread", "macros", "net", "time", "io-util"] }

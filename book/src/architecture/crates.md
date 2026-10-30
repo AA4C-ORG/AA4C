@@ -36,12 +36,12 @@ L0 与 `aa4c-id` 是纯计算，没有 I/O 和时钟；`aa4c-state` 只碰本地
 
 「业务逻辑只用 Rust」不等于假装传递依赖里没有原生代码：加密 provider、系统 UI、钥匙串与平台 FFI 可能带 C/汇编或生成的绑定。
 原则是**不引入外部业务进程和第二套业务语言**；任何原生传递依赖必须进入 `cargo xtask deps` 生成的清单并说明理由，
-能用维护良好的纯 Rust 实现时优先纯 Rust。M0 实测后再为 rustls 选择 provider，不在设计阶段把 `ring` 写成无条件结论。
+能用维护良好的纯 Rust 实现时优先纯 Rust。原始公钥实验目前用 ring（含 C 与汇编）；aws-lc-rs 与纯 Rust provider 未比较，三平台与手机交叉编译结果出来前 provider 仍是暂定，不写成无条件结论。
 
 | 需求 | 选择 | 不选 |
 |---|---|---|
 | 传输 | quinn（QUIC）| TCP + tokio-rustls 平行路径 |
-| TLS | rustls 原始公钥（crypto provider 由 M0 依赖/平台实验决定）| rcgen + x509-parser |
+| TLS | rustls 原始公钥（[ADR 0005](../../../docs/adr/0005-raw-public-keys.md)；crypto provider 暂定 ring）| rcgen + x509-parser |
 | 异步 | tokio（裁剪 features）| — |
 | 签名 / 哈希 | ed25519-dalek、blake3 | — |
 | 发现 | 自写组播信标（socket2；默认加密，见 ADR 0015）| mdns-sd |

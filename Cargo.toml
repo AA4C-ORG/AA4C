@@ -13,6 +13,7 @@ members = [
     "apps/aa4c-desktop",
     "ffi/aa4c-mobile",
     "xtask",
+    "experiments/raw-quic",
 ]
 
 [workspace.package]
