@@ -69,7 +69,7 @@ cargo test -p aa4c-engine --test policy_hunt -- --ignored  # 改了授权时
 
 - 提交信息英文，Conventional Commits，一个提交一件事；提交身份 `AA4C <dev@aa4c.com>`。
 - 每完成一个可独立验证的阶段就合入、推送、等 CI 出结果再继续。
-- 远端仓库与 issue 标签就绪后，先运行 mattpocock/skills 的 `setup-matt-pocock-skills`；不要凭空假设 tracker 与标签。
+- mattpocock/skills 的仓库配置见 `AGENTS.md` 的「Agent skills」与 `docs/agents/`：issue 在 GitHub `AA4C-ORG/AA4C`，用默认的五个分诊标签。
   日常流程：`/grill-with-docs`（对齐需求、维护 GLOSSARY 与 ADR）→ `/to-spec` → `/to-tickets` →
   `/implement`（内含 `/tdd`）→ `/code-review`。规格写模块与测试接缝，不写很快失效的实现文件清单。
 - 多个 agent 并行时：各用自己的 `CARGO_TARGET_DIR`；新命令放新模块，避免多人同时改一个共享文件。

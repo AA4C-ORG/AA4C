@@ -35,7 +35,20 @@ AA4C 是一个让人与人之间、设备与设备之间直接传文件，并让
 - 规格优先写用户故事、模块接缝与测试接缝，不把临时文件路径当长期设计。最高测试接缝是命令注册表。
 - 进入实现阶段后，用小的纵向切片推进：先约定命令与可观察结果，再写失败测试，再写最小实现，最后代码审查。
 - `skills/aa4c/SKILL.md` 是「怎么使用已安装 AA4C」的产品 skill，不是开发说明；命令参数始终从 `aa4c commands --json` 发现。
-- 仓库创建远端并选好 issue 标签后，再运行 mattpocock/skills 的仓库 setup；在那之前不要假装 issue tracker 与标签已经配置好。
+
+## Agent skills
+
+### Issue tracker
+
+issue 放在 GitHub `AA4C-ORG/AA4C` 的 Issues 里。见 `docs/agents/issue-tracker.md`。
+
+### Triage labels
+
+默认的五个分诊标签，标签名与角色同名。见 `docs/agents/triage-labels.md`。
+
+### Domain docs
+
+单一上下文：`GLOSSARY.md`、`docs/adr/` 与设计书 `book/src/`。见 `docs/agents/domain.md`。
 
 ## 提交与发布
 
