@@ -21,15 +21,20 @@ aa4c folders [list|browse|fetch]
 aa4c share [create|list|revoke|accept]
 aa4c webdrop [start|stop]
 aa4c relay [status|enable|disable]
+aa4c services [list|publish|unpublish] 本机开放给我的其他设备的服务（远程访问）
+aa4c tunnel <设备> <服务> [--local-port <端口>]   在 127.0.0.1 上开端口转发
+aa4c connect <设备> <服务>            标准输入输出接到服务，给 ssh 的 ProxyCommand 用
+aa4c ssh-config                      打印开放了 SSH 的我的设备的 ssh 配置段
 aa4c config [get|set]
 aa4c events                          NDJSON 事件流
 aa4c commands [--json]               全部命令及参数/结果 Schema、能力级别、副作用、路径访问
 aa4c run <命令 id> --params '{…}'    通用入口：任何命令（含插件命令）
-aa4c mcp [--read-root <目录>] [--write-root <目录>] [--allow-to <人或设备>] [--max-send-bytes <数>] [--allow-share] [--allow-trust]
+aa4c mcp [--read-root <目录>] [--write-root <目录>] [--allow-to <人或设备>] [--max-send-bytes <数>] [--allow-share] [--allow-tunnel] [--allow-trust]
 aa4c plugin [list|install|remove]
 ```
 
-每个子命令都是一个命令 id 的薄映射；`aa4c run` 可以调用任何命令。`--help` 是可执行的真相来源，man page 与 shell 补全由代码生成。
+每个子命令都是一个命令 id 的薄映射；`aa4c run` 可以调用任何命令。`connect` 是 `tunnel.open` 接到标准输入输出的形式，
+`ssh-config` 是 `services.list` 的另一种输出格式。`--help` 是可执行的真相来源，man page 与 shell 补全由代码生成。
 
 `proximity send` 复用普通发送或扫码收发；`proximity handoff` 会打开系统分享面板，需要人在场，无界面设备结构化返回
 `unsupported`，不会猜一个无线方式或静默降级。

@@ -47,6 +47,7 @@ Linux Secret Service；不可用时（如无桌面环境的 Linux / Docker）退
 | `shares` | 一次性发送链接（口令摘要、目标、有效期、中转担保许可、访问记录）|
 | `policy` | 信任相关设置：接收模式与「所有人」的到期时间、社交中转为谁开放 |
 | `addresses` | 设备地址缓存（上次已知地址、来源、时间）|
+| `services` | 本机开放的服务（名字、目标地址、并发与带宽上限）与端口转发记录 |
 
 数据格式升级：引擎启动时读 `meta` 里的版本，按顺序执行 Rust 写的升级步骤；每个升级步骤都有「旧数据 → 新数据」的测试。
 升级前自动备份 `state.redb`。
@@ -70,7 +71,8 @@ enabled = false               # 只为我的设备服务；社交中转为谁开
 max_bandwidth_mbps = 20
 ```
 
-信任相关的设置（接收模式、社交中转为谁开放、联系人免确认）不放 `config.toml`，存在状态库的 `policy` 与 `contacts` 表里，
+信任相关的设置（接收模式、社交中转为谁开放、联系人免确认、开放的服务）不放 `config.toml`，存在状态库的 `policy`、`contacts`
+与 `services` 表里，
 只能经 `trust` 级命令修改，防止被 `config.set` 或直接改文件绕过。
 
 `config.toml` 的可读性用于排查、备份与引擎停机时的恢复，不代表推荐绕过命令直接改。引擎运行时只用 `config.get` / `config.set`；

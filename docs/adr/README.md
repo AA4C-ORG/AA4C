@@ -34,3 +34,4 @@
 | [0014](0014-clean-break-from-v1.md) | 与第一代断代重建 | 已接受 |
 | [0015](0015-private-nearby-discovery.md) | 默认信标不暴露稳定身份 | 提议中（待 M0 实验）|
 | [0016](0016-no-remote-browser-share-in-v1.md) | 远程接收必须安装；近场可免安装直传 | 已接受 |
+| [0017](0017-remote-access-by-service-forwarding.md) | 远程访问用服务转发，不做插件、不做虚拟网卡 | 提议中 |

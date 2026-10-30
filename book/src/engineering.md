@@ -60,7 +60,7 @@ cargo test -p aa4c-engine --test policy_hunt -- --ignored  # 改了授权时
 
 ## CI
 
-- 三平台（Linux、macOS、Windows）测试 + lint + 依赖审计 + 分层/依赖预算 + 命令映射 + 文档/skill 校验 + Android 构建 + 引擎绑定冒烟测试；iOS 自 M6 起。
+- 三平台（Linux、macOS、Windows）测试 + lint + 依赖审计 + 分层/依赖预算 + 命令映射 + 文档/skill 校验 + Android 构建 + 引擎绑定冒烟测试；iOS 自 M7 起。
 - **`continue-on-error` 的任务必须有人定期看**：第一代的 Android 哨兵红了一个月没人发现，因为它永远不会让 CI 变红。
 - 下载外部固件/工具一律 `curl --retry 5 --retry-all-errors`（单用 `--retry` 不重试证书类错误）。
 - CI 红了当场修，不往上堆新改动。第一代两次「CI 红了一周/一个月没人发现」，期间的问题是叠在一起的。

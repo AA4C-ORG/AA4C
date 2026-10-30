@@ -79,7 +79,7 @@ M1 没有稳定完成两台真机附近互传前，不开始空间同步；M4 �
 ```text
 AA4C-ORG/aa4c          第二代主仓库
 AA4C-ORG/aa4c-legacy   第一代只读归档
-AA4C-ORG/aa4c.com      官网静态文件（也可在主仓库的 site/，M8 决定）
+AA4C-ORG/aa4c.com      官网静态文件（也可在主仓库的 site/，M9 决定）
 ```
 
 `aa4c.com` 只提供网站、下载、文档与链接落地页，不承担账号、发现、中转或文件存储。

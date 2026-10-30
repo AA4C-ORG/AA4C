@@ -37,11 +37,12 @@
 ## CallerContext
 
 `CallerContext` 至少包含：`origin`（UI / CLI / MCP / plugin / test）、允许的最高能力级别、只读根目录、可写根目录、
-允许的接收目标与分享能力、单次/会话字节预算、`human_present`、请求 id 与截止时间。它由可信入口创建；
+允许的接收目标、分享与端口转发能力、单次/会话字节预算、`human_present`、请求 id 与截止时间。它由可信入口创建；
 JSON 参数里出现同名字段一律忽略或拒绝。
 
 - UI 的人在场操作可以进入 `trust`，但仍要完成核对码、系统验证等人类步骤。
-- MCP 默认最高到 `act`，但发送还必须命中启动时授予的接收目标与字节预算；创建无指定接收人的一次性链接另需显式 `allow_share`。
+- MCP 默认最高到 `act`，但发送还必须命中启动时授予的接收目标与字节预算；创建无指定接收人的一次性链接另需显式 `allow_share`，
+  打开端口转发另需显式 `allow_tunnel`。
 - 插件只能继承安装时批准的 `read`/`act` 子集，永远不能进入 `trust`。
 - 普通 CLI 继承启动它的系统用户权限；给 agent 使用时优先 MCP。CLI 的 `--json` 只是输出格式，不是安全沙箱。
 
@@ -65,6 +66,8 @@ JSON 参数里出现同名字段一律忽略或拒绝。
 | `spaces` | `spaces.list` | `spaces.create` | `spaces.invite.accept`、`spaces.member.add`、`spaces.member.remove`、`spaces.member.role`、`spaces.leave` |
 | `folders` | `folders.list`、`folders.browse` | `folders.create`、`folders.fetch`、`folders.camera_upload.set` | — |
 | `relay` | `relay.status` | `relay.enable`、`relay.disable` | `relay.social.set` |
+| `services` | `services.list` | — | `services.publish`、`services.unpublish` |
+| `tunnel` | `tunnel.list` | `tunnel.open`、`tunnel.close` | — |
 | `status` | `status.show`（本机 + 每台设备的可达性与档位）| — | — |
 | `config` | `config.get` | `config.set` | — |
 | `plugin` | `plugin.list` | — | `plugin.install`、`plugin.remove` |
@@ -75,6 +78,8 @@ JSON 参数里出现同名字段一律忽略或拒绝。
   `spaces.invite.accept` 是受邀者接受空间邀请。
 - `contacts.settings.set` 管免确认与能否经我的中转站中转，所以是 `trust`；只改备注名用 `contacts.rename`。
 - `share.accept` 收的是没有关系的人发来的内容，与 `inbox.accept_stranger` 同级。
+- `services.publish` 把本机服务开放给我的其他设备，所以是 `trust`；`tunnel.open` 只能连我的设备上已开放的服务
+  （[远程访问](../network/remote-access.md)）。
 - `config.set` 的 `path_access = write`：路径类配置键（如 `receive.save_to`）按调用者的可写根目录检查。
   接收模式等信任设置不在配置里，`config.set` 改不到。
 - `proximity.send` 只走 AA4C 直连或扫码收发，必须给出明确的路径 id，不接受「自动」；平台直传是单独的 `proximity.handoff`，
@@ -93,7 +98,7 @@ JSON 参数里出现同名字段一律忽略或拒绝。
 
 `nearby.changed`、`proximity.routes_changed`、`device.reachability`（含档位与失败原因）、`inbox.request`、`transfer.progress`、`transfer.done`、
 `transfer.failed`、`contact.request`（有人兑现我的邀请，等我确认）、`contact.added`、`space.invite`、`space.changed`、`folder.changed`、
-`relay.status`、`plugin.notify`。
+`relay.status`、`tunnel.changed`、`plugin.notify`。
 
 外壳订阅事件来刷新界面；CLI 用 `aa4c events` 输出为 NDJSON；MCP 以通知或资源的形式提供。
 
