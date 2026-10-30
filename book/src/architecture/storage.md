@@ -66,6 +66,9 @@ remote = true                 # 允许跨网连接
 port_mapping = true           # 在 remote = true 时自动在路由器上开端口
 port = 0                      # 0 = 自动选择
 
+[agents]
+accept_from_my_devices = true # 接受我其他设备上 agent 的调用（devices.run）
+
 [relay]
 enabled = false               # 只为我的设备服务；社交中转为谁开放存在状态库，属信任级
 max_bandwidth_mbps = 20

@@ -24,6 +24,7 @@ aa4c run <command-id> --params '<json>'
 - Read state before acting: resolve the recipient with `devices.list`, `contacts.list` or `nearby.list`; never guess when names are ambiguous.
 - Treat `read` as inspection, `act` as an external side effect, and `trust` as a relationship/security change. Never disguise one tier as another.
 - Perform an `act` command when it is the user's requested outcome and the target and paths are unambiguous. Otherwise explain the ambiguity and ask.
+- Among the user's own devices you may act directly: send files, fetch shared files, and run `read`/`act` commands on another device with `devices.run`. Sending to a contact needs a target the user granted.
 - Do not complete human steps such as comparing a safety code, approving an unknown person, accepting content from a stranger or a one-time send link, exporting recovery material, revoking a device or installing a plugin. Return the pending step to the user.
 - Publishing a service for remote access is a trust step. Open a tunnel only to a service the user named on one of their own devices, and close it when done.
 - Respect MCP read/write roots, allowed recipients, share and tunnel permissions and byte budgets. Do not use the CLI to bypass a denied path or target.

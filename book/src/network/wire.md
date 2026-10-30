@@ -49,6 +49,7 @@
 | `contact.invite` | 双向 | 邀请链接的口令出示与确认 |
 | `share.redeem` | 收 → 发 | 一次性发送链接的口令出示；通过后发送方发 `send.offer` |
 | `tunnel.open` / `tunnel.ok` | 发起 → 目标 / 目标 → 发起 | 远程访问：指明服务名，确认后这条流上是双向裸字节（[远程访问](remote-access.md)）|
+| `cmd.call` / `cmd.result` | 双向 | 我的设备之间：在对方设备上执行一个命令（远程管理与跨设备 agent），结果与错误格式同本地命令 |
 | `addr.update` | 双向 | 我的设备、联系人、同空间成员之间互告当前地址（`{"addr":"[2408:…]:41234","kind":"public_v6","observed_at":…}`）|
 | `relay.*` | 设备 ↔ 中转站 | 登记地址、查询地址、打洞协调、转发 |
 

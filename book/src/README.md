@@ -3,7 +3,8 @@
 AA4C（AA连接，AA for Connection）是一个开源软件，让**人与人之间、设备与设备之间直接传文件**：
 不注册账号，不经网盘，不依赖官方服务器；优先直连，必要时经用户选择的自建中转站转发端到端密文。
 「把文件 AA 给我」是它的核心；在同一套身份与连接之上，它也让我自己的几台设备彼此连得上，可以 SSH 或远程桌面过去
-（[远程访问](network/remote-access.md)）。
+（[远程访问](network/remote-access.md)）。人能做的，AI agent 经同一套命令也能做：在我的设备之间，agent 可以直接收发文件、
+操作另一台设备（[MCP 与 AI agent](surfaces/agents.md)）。
 
 这本书是 AA4C 的设计文档，写给三类读者：
 

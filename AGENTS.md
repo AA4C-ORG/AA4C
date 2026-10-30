@@ -1,7 +1,8 @@
 # AGENTS.md
 
 AA4C 是一个让人与人之间、设备与设备之间直接传文件，并让自己的设备彼此连得上的开源软件：无账号、无官方服务器；
-优先直连，用户可自建中转站。
+优先直连，用户可自建中转站。对 AI agent 友好：命令行与 MCP 覆盖全部功能，在我的设备之间 agent 可以直接动手
+（[ADR 0018](docs/adr/0018-agents-act-directly-across-my-devices.md)）。
 一个 Rust 引擎，配桌面版、手机版、无界面版 `aa4c`、扫码收发页四个外壳。
 
 **当前阶段：设计。** 还没有代码。在 [book/src/roadmap.md](book/src/roadmap.md) 的 M0 开始之前，
@@ -53,6 +54,7 @@ issue 放在 GitHub `AA4C-ORG/AA4C` 的 Issues 里。见 `docs/agents/issue-trac
 ## 提交与发布
 
 - 提交信息用英文，Conventional Commits（`feat:` / `fix:` / `docs:` / `refactor:` / `test:` / `chore:`），一个提交一件事。
-- 提交身份 `AA4C <dev@aa4c.com>`（本机已按目录自动设置）。
+- 提交身份 `AA4C <dev@aa4c.com>`（本机已按目录自动设置），在 GitHub 上对应 AA4C-ORG。
+  提交信息里不加 `Co-Authored-By` 等 AI 署名 trailer：仓库的贡献者只显示 AA4C-ORG。
 - 任何 GitHub 上的创建、推送、转移、发布，先征得维护者同意。
 - 改了行为就同步改对应的 book 章节；新术语进 GLOSSARY；难回头的决定写 ADR（格式见 [docs/adr/README.md](docs/adr/README.md)）。

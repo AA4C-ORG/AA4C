@@ -35,3 +35,5 @@
 | [0015](0015-private-nearby-discovery.md) | 默认信标不暴露稳定身份 | 提议中（待 M0 实验）|
 | [0016](0016-no-remote-browser-share-in-v1.md) | 远程接收必须安装；近场可免安装直传 | 已接受 |
 | [0017](0017-remote-access-by-service-forwarding.md) | 远程访问用服务转发，不做插件、不做虚拟网卡 | 已接受 |
+| [0018](0018-agents-act-directly-across-my-devices.md) | Agent 在我的设备之间直接动手 | 已接受 |
+| [0019](0019-apache-2-license.md) | 许可证用 Apache-2.0 | 已接受 |

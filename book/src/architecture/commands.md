@@ -36,13 +36,15 @@
 
 ## CallerContext
 
-`CallerContext` 至少包含：`origin`（UI / CLI / MCP / plugin / test）、允许的最高能力级别、只读根目录、可写根目录、
+`CallerContext` 至少包含：`origin`（UI / CLI / MCP / plugin / 我的另一台设备 / test）、允许的最高能力级别、只读根目录、可写根目录、
 允许的接收目标、分享与端口转发能力、单次/会话字节预算、`human_present`、请求 id 与截止时间。它由可信入口创建；
 JSON 参数里出现同名字段一律忽略或拒绝。
 
 - UI 的人在场操作可以进入 `trust`，但仍要完成核对码、系统验证等人类步骤。
-- MCP 默认最高到 `act`，但发送还必须命中启动时授予的接收目标与字节预算；创建无指定接收人的一次性链接另需显式 `allow_share`，
+- MCP 默认最高到 `act`；发送默认可以去我的任何一台设备，发给联系人还必须命中启动时授予的接收目标，都受字节预算约束；创建无指定接收人的一次性链接另需显式 `allow_share`，
   打开端口转发另需显式 `allow_tunnel`。
+- 跨设备调用（`devices.run`）在目标设备上重新生成上下文：来源是发起设备，最高到 `act`，路径只限那台设备的「收到的」与共享出来的目录
+  （[ADR 0018](../../../docs/adr/0018-agents-act-directly-across-my-devices.md)）。
 - 插件只能继承安装时批准的 `read`/`act` 子集，永远不能进入 `trust`。
 - 普通 CLI 继承启动它的系统用户权限；给 agent 使用时优先 MCP。CLI 的 `--json` 只是输出格式，不是安全沙箱。
 
@@ -54,7 +56,7 @@ JSON 参数里出现同名字段一律忽略或拒绝。
 | 命名空间 | `read` | `act` | `trust` 👤 |
 |---|---|---|---|
 | `me` | `me.show` | `me.rename` | `me.recovery.export` |
-| `devices` | `devices.list` | — | `devices.join.start`、`devices.join.accept`、`devices.revoke` |
+| `devices` | `devices.list` | `devices.run` | `devices.join.start`、`devices.join.accept`、`devices.revoke` |
 | `nearby` | `nearby.list` | — | `nearby.receive_mode.set` |
 | `proximity` | `proximity.routes` | `proximity.send`、`proximity.handoff` | — |
 | `contacts` | `contacts.list` | `contacts.rename` | `contacts.add.qr`、`contacts.invite.create`、`contacts.invite.accept`、`contacts.invite.approve`、`contacts.remove`、`contacts.settings.set` |
@@ -74,6 +76,7 @@ JSON 参数里出现同名字段一律忽略或拒绝。
 
 👤 = 信任级，MCP 默认不暴露。插件声明的命令 `plugin.<id>.<name>` 只能是 `read` 或 `act`。
 
+- `devices.run` 在我的另一台设备上执行一个 `read` 或 `act` 命令；内层命令是 `trust` 时直接拒绝。
 - `contacts.invite.accept` 是 B 打开邀请后的确认，`contacts.invite.approve` 是 A 看到对方名字与核对码后的确认；
   `spaces.invite.accept` 是受邀者接受空间邀请。
 - `contacts.settings.set` 管免确认与能否经我的中转站中转，所以是 `trust`；只改备注名用 `contacts.rename`。

@@ -1,13 +1,16 @@
 # AA4C
 
-**把文件 AA 给身边和远方的人，也让你自己的设备彼此连得上。**
+**把文件 AA 给身边和远方的人，让你的设备彼此连得上，也让 AI agent 能直接动手。**
 
-AA4C（AA连接，AA for Connection）是一个开源的点对点文件互传与设备互联工具：不需要账号，没有官方服务器。
-设备之间优先直连；直连不通时，只经你自己选择的中转站转发端到端加密的数据。
+AA4C（AA连接，AA for Connection）是一个开源的点对点文件互传与设备互联工具，为人和 AI agent 同时设计：
+不需要账号，没有官方服务器。设备之间优先直连；直连不通时，只经你自己选择的中转站转发端到端加密的数据。
+全部功能都通过命令行与 MCP 开放；在你信任的设备之间，agent 不用先配置就能收发文件、操作另一台设备。
 
 [![Status: design](https://img.shields.io/badge/status-design-orange)](book/src/roadmap.md)
 [![Engine: Rust](https://img.shields.io/badge/engine-Rust-b7410e)](book/src/architecture/overview.md)
+[![Agents: CLI + MCP](https://img.shields.io/badge/agents-CLI%20%2B%20MCP-6f42c1)](book/src/surfaces/agents.md)
 [![Docs: design book](https://img.shields.io/badge/docs-design%20book-blue)](book/src/SUMMARY.md)
+[![License: Apache-2.0](https://img.shields.io/badge/license-Apache--2.0-green)](LICENSE)
 
 > [!NOTE]
 > 项目处于**设计阶段**：仓库目前只有设计文档，还没有可运行的代码和安装包。实现按[路线图](book/src/roadmap.md)推进，欢迎参与设计讨论。
@@ -16,6 +19,7 @@ AA4C（AA连接，AA for Connection）是一个开源的点对点文件互传与
 
 - [适用场景](#适用场景)
 - [功能](#功能)
+- [为 AI agent 设计](#为-ai-agent-设计)
 - [设计原则](#设计原则)
 - [工作原理](#工作原理)
 - [文档](#文档)
@@ -32,6 +36,7 @@ AA4C（AA连接，AA for Connection）是一个开源的点对点文件互传与
 - **远方的家人朋友**：加一次联系人，以后不在同一个网络也能直接发送大文件。
 - **一家人、一个小团队**：共享文件夹，全家手机相册自动汇到家里的电脑或 NAS。
 - **自己的几台电脑和 NAS**：在单位或外面 SSH、远程桌面到家里的设备。
+- **AI agent**：让 agent 把报告发到你的手机、从 NAS 取回资料，或把文件交给另一台设备上的 agent 接着处理。
 
 ## 功能
 
@@ -47,10 +52,28 @@ v1.0 计划提供以下功能，范围以[核心功能与范围](book/src/produc
 | 共享空间 | 家庭或小团队的共享文件夹，按角色（所有者、可编辑、只读）在成员设备之间同步 |
 | 常开设备与中转站 | NAS、小主机无界面运行，一键成为中转站，可在手机或电脑上远程管理 |
 | 远程访问 | 把自己设备上的 SSH、远程桌面等服务开放给自己的其他设备 |
-| 命令行与 AI agent | `aa4c` 命令行与 MCP 覆盖全部功能，输出结构化 JSON；改变信任关系的操作只能由人完成 |
+| AI agent 直接可用 | `aa4c` 命令行与 MCP 覆盖全部功能；在你信任的设备之间 agent 直接收发与操作，越界操作需人授权 |
 | 插件 | WebAssembly 沙箱插件，处理「收到文件之后怎么办」这类自动化 |
 
 明确不做：下载器、AI 与知识库、聊天、云盘、账号体系、社区（[ADR 0009](docs/adr/0009-no-downloader-no-ai.md)）。
+
+## 为 AI agent 设计
+
+- **一切皆命令**：界面上的每个动作都是命令注册表里的一个命令；`aa4c commands --json` 给出全部命令的参数与结果 Schema、能力级别和副作用。
+- **两种接入**：`aa4c` 命令行（`--json` 输出、固定退出码）与 MCP 服务（工具由命令注册表自动生成），外加事件流与稳定的错误码。
+- **信任设备之间直接动手**：agent 默认可以把文件发到你的任何一台设备，也能在另一台设备上执行命令（例如让 NAS 把文件发到手机）；
+  另一台设备上的 agent 收到文件后可以接着处理（[ADR 0018](docs/adr/0018-agents-act-directly-across-my-devices.md)）。
+- **越界要人授权**：发给联系人、生成一次性链接、打开端口转发都要在启动 MCP 时显式授予；加入设备、添加联系人等改变信任关系的操作
+  只能由人完成（[ADR 0011](docs/adr/0011-trust-changes-are-human-only.md)）。
+- **有边界的沙箱**：MCP 会话只能读写授予的目录，并受字节预算约束；文件内容与工具描述都按不可信数据处理。
+
+计划中的接入方式：
+
+```bash
+claude mcp add aa4c -- aa4c mcp --read-root ~/Documents --write-root ~/Downloads/AA4C
+```
+
+之后对 agent 说「把这份报告发到我手机上」即可。详见 [MCP 与 AI agent](book/src/surfaces/agents.md)。
 
 ## 设计原则
 
@@ -58,6 +81,7 @@ v1.0 计划提供以下功能，范围以[核心功能与范围](book/src/produc
 - **不依赖服务商**：没有账号服务器，没有官方中转站；aa4c.com 只托管静态页面。
 - **默认安全**：AA4C 设备之间的传输全程端到端加密；信任关系必须由人亲手建立；默认只接收联系人发来的东西。
 - **轻量**：业务逻辑集中在一个 Rust 引擎里，依赖数量有预算，并在 CI 中检查。
+- **Agent 友好**：人能做的，agent 经同一套命令也能做；信任边界由人划定，边界之内 agent 自己动手。
 - **如实告知**：连不上时说清卡在哪一步、为什么、可以怎么办，不做超出能力的承诺。
 
 ## 工作原理
@@ -107,11 +131,11 @@ mdbook serve book
 | M1 | 附近互传（桌面版、命令行）|
 | M2 | Android 版 |
 | M3 | 近场免安装：扫码收发与系统直传 |
-| M4 | 我的设备、联系人、跨网连接与中转站 |
+| M4 | 我的设备、联系人、跨网连接与中转站；MCP 与 agent 跨设备收发 |
 | M5 | 共享空间与常开设备 |
 | M6 | 远程访问 |
 | M7 | iOS 版 |
-| M8 | 自动化：MCP、Skill、插件 |
+| M8 | Skill 与插件 |
 | M9 | 发布 |
 
 每个里程碑以「真人在真设备上完成场景」加自动化测试为完成标准，详见[路线图](book/src/roadmap.md)。
@@ -130,7 +154,7 @@ mdbook serve book
 
 ## 许可证
 
-许可证尚未选定，将在合入第一行产品代码之前确定（倾向 `MIT OR Apache-2.0`，见[待细化的问题](book/src/open-questions.md)第 18 条）。
+本项目以 [Apache License 2.0](LICENSE) 授权（[ADR 0019](docs/adr/0019-apache-2-license.md)）。
 
 ## 联系
 

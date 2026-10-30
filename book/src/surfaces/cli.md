@@ -28,8 +28,8 @@ aa4c ssh-config                      打印开放了 SSH 的我的设备的 ssh 
 aa4c config [get|set]
 aa4c events                          NDJSON 事件流
 aa4c commands [--json]               全部命令及参数/结果 Schema、能力级别、副作用、路径访问
-aa4c run <命令 id> --params '{…}'    通用入口：任何命令（含插件命令）
-aa4c mcp [--read-root <目录>] [--write-root <目录>] [--allow-to <人或设备>] [--max-send-bytes <数>] [--allow-share] [--allow-tunnel] [--allow-trust]
+aa4c run <命令 id> --params '{…}' [--on <我的设备>]   通用入口：任何命令（含插件命令），可在我的另一台设备上执行
+aa4c mcp [--read-root <目录>] [--write-root <目录>] [--allow-to <联系人>] [--no-my-devices] [--max-send-bytes <数>] [--allow-share] [--allow-tunnel] [--allow-trust]
 aa4c plugin [list|install|remove]
 ```
 

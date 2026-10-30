@@ -58,7 +58,8 @@ Wi-Fi Direct、临时热点、蓝牙或系统提供的其他近场能力。一�
 
 在 NAS 或服务器上无界面运行 AA4C；写脚本自动发文件；让 AI agent 帮忙「把这份报告发到我手机上」。
 
-- AA4C 要做到：一个无界面程序 `aa4c`，命令行与 MCP 能驱动全部功能（信任相关的除外，见 [MCP 与 AI agent](../surfaces/agents.md)）。
+- AA4C 要做到：一个无界面程序 `aa4c`，命令行与 MCP 能驱动全部功能（信任相关的除外，见 [MCP 与 AI agent](../surfaces/agents.md)）；
+  在我的设备之间，agent 不用先配置就能直接收发文件、操作另一台设备。
 
 ## 不是我们的用户场景
 
