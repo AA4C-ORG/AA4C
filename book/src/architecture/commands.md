@@ -28,7 +28,7 @@
 | `tier` | 能力级别：`read` / `act` / `trust`（[ADR 0011](../../../docs/adr/0011-trust-changes-are-human-only.md)）|
 | `effects` | 可机器读取的副作用：`none` / `local_write` / `network` / `trust`，可多选 |
 | `path_access` | `none` / `read` / `write` / `read_write`；入口据此应用授予的根目录 |
-| `long_running` | 是否返回一个可订阅进度的任务 id |
+| `long_running` | 是否立即返回一个可订阅进度的 id（发送类即 Transfer id）|
 | `human_step` | 是否包含必须由人完成的步骤（如比对核对码）|
 | `idempotent` | 同一幂等键重试是否安全；长任务命令必须说明 |
 
@@ -45,31 +45,41 @@ JSON 参数里出现同名字段一律忽略或拒绝。
 - 插件只能继承安装时批准的 `read`/`act` 子集，永远不能进入 `trust`。
 - 普通 CLI 继承启动它的系统用户权限；给 agent 使用时优先 MCP。CLI 的 `--json` 只是输出格式，不是安全沙箱。
 
-能力级别必须是**静态的**，不能让同一个命令“联系人时是 act、陌生人时变成 trust”，否则 MCP 的工具清单会说谎。
+能力级别必须是**静态的**，不能让同一个命令「联系人时是 act、陌生人时变成 trust」，否则 MCP 的工具清单会说谎。
 需要不同权限的行为拆成不同命令。
 
 ## 命令一览（v1 草案）
 
-| 命名空间 | 命令 | 级别 |
-|---|---|---|
-| `me` | `me.show`、`me.rename`、`me.recovery.export` 👤 | read / act / trust |
-| `devices` | `devices.list`、`devices.join.start`、`devices.join.accept` 👤、`devices.revoke` 👤 | read / trust |
-| `nearby` | `nearby.list`、`nearby.receive_mode.set` 👤 | read / trust |
-| `proximity` | `proximity.routes`、`proximity.send` | read / act |
-| `contacts` | `contacts.list`、`contacts.add.qr` 👤、`contacts.invite.create`、`contacts.invite.accept` 👤、`contacts.remove`、`contacts.settings.set` | read / trust |
-| `send` | `send.files`、`send.text`、`send.cancel`、`send.retry` | act |
-| `inbox` | `inbox.list`、`inbox.accept`（已有关系）、`inbox.accept_stranger` 👤、`inbox.reject`、`inbox.open` | read / act / trust |
-| `transfers` | `transfers.list`、`transfers.show` | read |
-| `share` | `share.create`、`share.list`、`share.revoke`、`share.accept` | read / act |
-| `webdrop` | `webdrop.start`、`webdrop.stop` | act |
-| `spaces` | `spaces.list`、`spaces.create`、`spaces.member.add` 👤、`spaces.member.remove` 👤、`spaces.member.role` 👤、`spaces.leave` 👤 | read / act / trust |
-| `folders` | `folders.list`、`folders.create`、`folders.browse`、`folders.fetch`、`folders.camera_upload.set` | read / act |
-| `relay` | `relay.status`、`relay.enable`、`relay.disable`、`relay.social.set` 👤 | read / act / trust |
-| `status` | `status.show`（本机 + 每台设备的可达性与档位）| read |
-| `config` | `config.get`、`config.set` | read / act |
-| `plugin` | `plugin.list`、`plugin.install` 👤、`plugin.remove` 👤、`plugin.<id>.<name>`（插件声明的命令）| read / trust / 插件只能声明 read 或 act |
+| 命名空间 | `read` | `act` | `trust` 👤 |
+|---|---|---|---|
+| `me` | `me.show` | `me.rename` | `me.recovery.export` |
+| `devices` | `devices.list` | — | `devices.join.start`、`devices.join.accept`、`devices.revoke` |
+| `nearby` | `nearby.list` | — | `nearby.receive_mode.set` |
+| `proximity` | `proximity.routes` | `proximity.send`、`proximity.handoff` | — |
+| `contacts` | `contacts.list` | `contacts.rename` | `contacts.add.qr`、`contacts.invite.create`、`contacts.invite.accept`、`contacts.invite.approve`、`contacts.remove`、`contacts.settings.set` |
+| `send` | — | `send.files`、`send.text`、`send.cancel`、`send.retry` | — |
+| `inbox` | `inbox.list` | `inbox.accept`（已有关系）、`inbox.reject`、`inbox.open` | `inbox.accept_stranger` |
+| `transfers` | `transfers.list`、`transfers.show` | — | — |
+| `share` | `share.list` | `share.create`、`share.revoke` | `share.accept` |
+| `webdrop` | — | `webdrop.start`、`webdrop.stop` | — |
+| `spaces` | `spaces.list` | `spaces.create` | `spaces.invite.accept`、`spaces.member.add`、`spaces.member.remove`、`spaces.member.role`、`spaces.leave` |
+| `folders` | `folders.list`、`folders.browse` | `folders.create`、`folders.fetch`、`folders.camera_upload.set` | — |
+| `relay` | `relay.status` | `relay.enable`、`relay.disable` | `relay.social.set` |
+| `status` | `status.show`（本机 + 每台设备的可达性与档位）| — | — |
+| `config` | `config.get` | `config.set` | — |
+| `plugin` | `plugin.list` | — | `plugin.install`、`plugin.remove` |
 
-👤 = 信任级，MCP 默认不暴露。
+👤 = 信任级，MCP 默认不暴露。插件声明的命令 `plugin.<id>.<name>` 只能是 `read` 或 `act`。
+
+- `contacts.invite.accept` 是 B 打开邀请后的确认，`contacts.invite.approve` 是 A 看到对方名字与核对码后的确认；
+  `spaces.invite.accept` 是受邀者接受空间邀请。
+- `contacts.settings.set` 管免确认与能否经我的中转站中转，所以是 `trust`；只改备注名用 `contacts.rename`。
+- `share.accept` 收的是没有关系的人发来的内容，与 `inbox.accept_stranger` 同级。
+- `config.set` 的 `path_access = write`：路径类配置键（如 `receive.save_to`）按调用者的可写根目录检查。
+  接收模式等信任设置不在配置里，`config.set` 改不到。
+- `proximity.send` 只走 AA4C 直连或扫码收发，必须给出明确的路径 id，不接受「自动」；平台直传是单独的 `proximity.handoff`，
+  描述里静态标记 `human_step = true`，设备选择、配对和系统确认不能由 MCP 代替。路径在执行前消失时返回 `unsupported`，
+  不得静默换到安全语义更弱的路径。
 
 ## 错误
 
@@ -82,11 +92,8 @@ JSON 参数里出现同名字段一律忽略或拒绝。
 事件是引擎推送的 JSON 对象，`{"type": "transfer.progress", "at": …, "data": {…}}`。主要类型：
 
 `nearby.changed`、`proximity.routes_changed`、`device.reachability`（含档位与失败原因）、`inbox.request`、`transfer.progress`、`transfer.done`、
-`transfer.failed`、`contact.added`、`space.changed`、`folder.changed`、`relay.status`、`plugin.notify`。
-
-`proximity.send` 只编排已存在的 AA4C 直连、`webdrop.start` 或平台交付路径，不复制文件传输逻辑。选平台交付时命令描述必须标记
-`human_step = true`；设备选择、配对和系统确认不能由 MCP 代替。路径在执行前消失时返回 `unsupported` 或 `needs_human`，
-不得静默换到安全语义更弱的路径。
+`transfer.failed`、`contact.request`（有人兑现我的邀请，等我确认）、`contact.added`、`space.invite`、`space.changed`、`folder.changed`、
+`relay.status`、`plugin.notify`。
 
 外壳订阅事件来刷新界面；CLI 用 `aa4c events` 输出为 NDJSON；MCP 以通知或资源的形式提供。
 

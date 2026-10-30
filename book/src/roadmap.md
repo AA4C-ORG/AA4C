@@ -17,17 +17,21 @@
 ## M0 地基
 
 1. 仓库骨架：本书、`AGENTS.md`、`GLOSSARY.md`、ADR（已完成）；Cargo 工作区与各 crate 空壳、`[workspace.lints]`、`xtask layers/deps`、三平台 CI。
-2. 五个实验，各自一个最小可运行程序，结论写回对应 ADR 或平台能力矩阵：
-   - **原始公钥 QUIC**：两端用 Ed25519 原始公钥完成 QUIC 握手并互相校验指纹（[ADR 0005](../../docs/adr/0005-raw-public-keys.md)）。
+2. 四个实验，各自一个最小可运行程序，结论写回对应 ADR：
+   - **原始公钥 QUIC**：两端用 Ed25519 原始公钥完成 QUIC 握手并互相校验指纹，同时定下 rustls 的 crypto provider
+     （[ADR 0005](../../docs/adr/0005-raw-public-keys.md)）。
    - **UniFFI + Android**：Rust 引擎在 Android 模拟器上跑起来，Kotlin 薄壳调用一个命令并收到事件（[ADR 0001](../../docs/adr/0001-rust-engine-native-mobile-shells.md)）。
    - **桌面界面**：首页（附近与联系人）分别用 egui 和 Slint 做原型，离屏截图对比，按[桌面版](surfaces/desktop.md)的标准定案。
-   - **默认信标隐私**：用发现密钥做最小帧实验，抓包证明没有稳定公开身份，测出 100 个联系人时的大小与发现延迟上限
-     （[ADR 0015](../../docs/adr/0015-private-nearby-discovery.md)）。
-   - **近场平台能力**：Android 真机验证 Wi-Fi Direct / 临时热点建立本地 IP 后复用 QUIC 与扫码收发；逐平台记录系统直传、
-     蓝牙与红外能力，探测不到即判定不支持（[近场交付](network/proximity.md)）。
-3. 命令注册表、`CallerContext` 与事件流的骨架；`aa4c commands --json` 能列出命令描述；MCP 的目标/路径/字节预算越权测试先于真实发送。
-4. 自动门禁骨架：`xtask layers/deps`、文档构建与链接检查、skill 校验、三平台 CI。
-5. 待定的工程决定：许可证、旧仓库处理、redb 或 fjall（见[待细化的问题](open-questions.md)）。
+   - **默认信标隐私**：用发现密钥做最小帧实验，抓包证明信标载荷没有稳定公开身份（包括真实条目数），测出 100 个联系人时的
+     填充档位、大小与发现延迟上限（[ADR 0015](../../docs/adr/0015-private-nearby-discovery.md)）。
+3. 三项选型比较，不做原型，出结论即可：redb 还是 fjall（[ADR 0006](../../docs/adr/0006-redb-not-sqlite.md)）；MCP 根目录用 `cap-std`
+   还是各平台 `openat` 等价方式（[MCP 与 AI agent](surfaces/agents.md)）；首份依赖清单（`cargo xtask deps`）。
+4. 命令注册表、`CallerContext` 与事件流的骨架；`aa4c commands --json` 能列出命令描述；MCP 的目标/路径/字节预算越权测试先于真实发送。
+5. 自动门禁骨架：`xtask layers/deps`、文档构建与链接检查、skill 校验、三平台 CI。
+6. 待定的工程决定：许可证、旧仓库处理（见[待细化的问题](open-questions.md)）。
+
+M0 的全部任务以本节为准，其他章节写到「M0」时都应能在这里找到。近场平台能力矩阵不进 M0，放到 M3 开工前
+（[近场交付](network/proximity.md)）。
 
 ## 第一代的状态
 

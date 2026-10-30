@@ -10,7 +10,7 @@ aa4c up [--foreground]               启动常驻引擎（无界面）；down �
 aa4c status [--json]                 本机状态 + 每台设备的可达性与档位 + 连不上的原因
 aa4c me                              我的名字与指纹
 aa4c nearby                          附近的人与设备
-aa4c proximity [routes|send]         当面可用路径；发送时选择 AA4C、扫码或系统直传
+aa4c proximity [routes|send|handoff] 当面可用路径；send 走 AA4C 或扫码，handoff 交给系统分享
 aa4c send <路径>... --to <人或设备> [--wait]
 aa4c send --text "…" --to <人或设备>
 aa4c inbox [list|accept|reject]
@@ -18,10 +18,10 @@ aa4c contacts [list|invite|remove]
 aa4c devices [list|join|revoke]      join/revoke 需要人操作，见下
 aa4c spaces [list|create|members]
 aa4c folders [list|browse|fetch]
-aa4c share [create|list|revoke|open]
+aa4c share [create|list|revoke|accept]
 aa4c webdrop [start|stop]
 aa4c relay [status|enable|disable]
-aa4c config [get|set|list]
+aa4c config [get|set]
 aa4c events                          NDJSON 事件流
 aa4c commands [--json]               全部命令及参数/结果 Schema、能力级别、副作用、路径访问
 aa4c run <命令 id> --params '{…}'    通用入口：任何命令（含插件命令）
@@ -31,8 +31,8 @@ aa4c plugin [list|install|remove]
 
 每个子命令都是一个命令 id 的薄映射；`aa4c run` 可以调用任何命令。`--help` 是可执行的真相来源，man page 与 shell 补全由代码生成。
 
-`proximity send` 是现场交付的编排入口：它复用普通发送或扫码收发；选系统直传时仍会打开平台选择器，需要人在场，
-无界面设备会结构化返回 `unsupported`，不会猜一个无线方式或静默降级。
+`proximity send` 复用普通发送或扫码收发；`proximity handoff` 会打开系统分享面板，需要人在场，无界面设备结构化返回
+`unsupported`，不会猜一个无线方式或静默降级。
 
 给 agent 使用时以 `aa4c commands --json` 为运行时真相，不要让 skill 或文档复制完整参数表。需要限制文件范围或处理不可信内容时使用
 `aa4c mcp --read-root … --write-root …`；直接 CLI 与当前系统用户权限相同，不提供额外沙箱。
@@ -62,5 +62,5 @@ aa4c plugin [list|install|remove]
 
 ## 无界面设备的首次设置
 
-`aa4c up` 第一次运行时生成身份，并在终端/日志里打印加入码。在手机或电脑上「加入我的设备」输入它，之后这台机器就是「我的设备」，
+`aa4c up` 第一次运行时生成身份，并在标准输出打印加入码（不写入 `logs/`，5 分钟过期，过期后用 `aa4c devices join` 重新生成）。在手机或电脑上「加入我的设备」输入它，之后这台机器就是「我的设备」，
 后续管理都在手机或电脑上完成（[关键流程](../identity/flows.md)第 8 条）。

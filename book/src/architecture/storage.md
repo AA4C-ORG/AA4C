@@ -22,7 +22,7 @@ state.redb         状态库
 engine.lock        单实例锁
 engine.sock        本地 IPC（Unix）
 plugins/           已安装的插件（.wasm + manifest）
-logs/              日志（不含私钥、文件内容、完整公钥）
+logs/              日志（不含私钥、文件内容、完整公钥、口令）
 ```
 
 收到的文件默认落在系统「下载」目录下的 `AA4C/`，可在配置里改。
@@ -44,7 +44,8 @@ Linux Secret Service；不可用时（如无桌面环境的 Linux / Docker）退
 | `folder_index` | 共享文件夹的文件元数据索引（路径、大小、修改时间、BLAKE3、所在设备）|
 | `transfers` | 传输记录 |
 | `inbox` | 待确认与已收到的条目 |
-| `shares` | 分享链接（口令摘要、目标、有效期、访问记录）|
+| `shares` | 一次性发送链接（口令摘要、目标、有效期、中转担保许可、访问记录）|
+| `policy` | 信任相关设置：接收模式与「所有人」的到期时间、社交中转为谁开放 |
 | `addresses` | 设备地址缓存（上次已知地址、来源、时间）|
 
 数据格式升级：引擎启动时读 `meta` 里的版本，按顺序执行 Rust 写的升级步骤；每个升级步骤都有「旧数据 → 新数据」的测试。
@@ -57,8 +58,7 @@ Linux Secret Service；不可用时（如无桌面环境的 Linux / Docker）退
 device_name = "霍涛的 MacBook"
 
 [receive]
-mode = "contacts_only"        # contacts_only | everyone | off；everyone 由引擎自动在 10 分钟后改回
-save_to = "~/Downloads/AA4C"
+save_to = "~/Downloads/AA4C"  # 路径类配置：经 config.set 修改时按调用者的可写根目录检查
 
 [network]
 remote = true                 # 允许跨网连接
@@ -66,12 +66,12 @@ port_mapping = true           # 在 remote = true 时自动在路由器上开端
 port = 0                      # 0 = 自动选择
 
 [relay]
-enabled = false
-serve = "my_devices"          # my_devices | 另见社交中转设置（存在状态库，属信任级）
+enabled = false               # 只为我的设备服务；社交中转为谁开放存在状态库，属信任级
 max_bandwidth_mbps = 20
 ```
 
-信任相关的设置（社交中转为谁开放、联系人免确认）不放 `config.toml`，只能经 `trust` 级命令修改，防止被脚本或 agent 直接改文件绕过。
+信任相关的设置（接收模式、社交中转为谁开放、联系人免确认）不放 `config.toml`，存在状态库的 `policy` 与 `contacts` 表里，
+只能经 `trust` 级命令修改，防止被 `config.set` 或直接改文件绕过。
 
 `config.toml` 的可读性用于排查、备份与引擎停机时的恢复，不代表推荐绕过命令直接改。引擎运行时只用 `config.get` / `config.set`；
 写入采用临时文件 + fsync + 原子替换。直接编辑若与引擎并发，可能被拒绝或在下次保存时覆盖。

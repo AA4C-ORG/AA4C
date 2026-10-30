@@ -24,9 +24,9 @@ aa4c run <command-id> --params '<json>'
 - Read state before acting: resolve the recipient with `devices.list`, `contacts.list` or `nearby.list`; never guess when names are ambiguous.
 - Treat `read` as inspection, `act` as an external side effect, and `trust` as a relationship/security change. Never disguise one tier as another.
 - Perform an `act` command when it is the user's requested outcome and the target and paths are unambiguous. Otherwise explain the ambiguity and ask.
-- Do not complete human steps such as comparing a safety code, approving an unknown person, exporting recovery material, revoking a device or installing a plugin. Return the pending step to the user.
+- Do not complete human steps such as comparing a safety code, approving an unknown person, accepting content from a stranger or a one-time send link, exporting recovery material, revoking a device or installing a plugin. Return the pending step to the user.
 - Respect MCP read/write roots, allowed recipients, share permission and byte budgets. Do not use the CLI to bypass a denied path or target.
-- For an in-person transfer, inspect the runtime proximity routes before suggesting Wi-Fi Direct, Bluetooth, infrared or a system handoff. Never claim a
+- For an in-person transfer, inspect the runtime proximity routes before suggesting Wi-Fi Direct, Bluetooth or a system handoff. Never claim a
   platform route exists from the device name alone, and never silently downgrade an AA4C-encrypted route to Web drop or system handoff.
 - A system handoff requires a person to select and confirm the nearby device. Surface that step; do not interpret “submitted to the operating system” as
   “received and verified”. Remote receipt requires AA4C on both ends.

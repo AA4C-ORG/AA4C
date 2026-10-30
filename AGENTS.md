@@ -1,7 +1,7 @@
 # AGENTS.md
 
 AA4C 是一个让人与人之间、设备与设备之间直接传文件的开源软件：无账号、无官方服务器；优先直连，用户可自建中转站。
-一个 Rust 引擎，配桌面版、手机版、无界面版 `aa4c`、浏览器收发页四个外壳。
+一个 Rust 引擎，配桌面版、手机版、无界面版 `aa4c`、扫码收发页四个外壳。
 
 **当前阶段：设计。** 还没有代码。在 [book/src/roadmap.md](book/src/roadmap.md) 的 M0 开始之前，
 不要写产品代码；改动只针对文档。
@@ -17,7 +17,7 @@ AA4C 是一个让人与人之间、设备与设备之间直接传文件的开源
 - **产品边界**：不做下载器、AI/知识库、聊天、云盘、账号体系、社区（[ADR 0009](docs/adr/0009-no-downloader-no-ai.md)）。
 - **一切皆命令**：每个用户可见的行为都是引擎命令注册表里的一个命令；桌面、手机、CLI、MCP、插件都只调命令
   （[book/src/architecture/commands.md](book/src/architecture/commands.md)）。
-- **语言**：业务逻辑只用 Rust。例外只有两处：手机薄壳（Kotlin/Swift，只画界面、转调引擎并适配系统能力，不写选择策略）与浏览器收发页
+- **语言**：业务逻辑只用 Rust。例外只有两处：手机薄壳（Kotlin/Swift，只画界面、转调引擎并适配系统能力，不写选择策略）与扫码收发页
   （纯 HTML，不用 JavaScript）（[ADR 0001](docs/adr/0001-rust-engine-native-mobile-shells.md)）。
 - **分层**：低层 crate 不依赖高层；UI 库只出现在最上层（[book/src/architecture/crates.md](book/src/architecture/crates.md)）。
 - **永不崩溃**：非测试代码不用 `unwrap`/`expect`/`panic!`/`unreachable!`/`todo!`；一切来自网络、文件、参数的值都当敌意输入。
@@ -32,7 +32,7 @@ AA4C 是一个让人与人之间、设备与设备之间直接传文件的开源
 - 领域语言在 `GLOSSARY.md`，难回头的决定在 `docs/adr/`；不要在 issue、skill 或代码注释里再造第二套定义。
 - 规格优先写用户故事、模块接缝与测试接缝，不把临时文件路径当长期设计。最高测试接缝是命令注册表。
 - 进入实现阶段后，用小的纵向切片推进：先约定命令与可观察结果，再写失败测试，再写最小实现，最后代码审查。
-- `skills/aa4c/SKILL.md` 是“怎么使用已安装 AA4C”的产品 skill，不是开发说明；命令参数始终从 `aa4c commands --json` 发现。
+- `skills/aa4c/SKILL.md` 是「怎么使用已安装 AA4C」的产品 skill，不是开发说明；命令参数始终从 `aa4c commands --json` 发现。
 - 仓库创建远端并选好 issue 标签后，再运行 mattpocock/skills 的仓库 setup；在那之前不要假装 issue tracker 与标签已经配置好。
 
 ## 提交与发布
