@@ -92,7 +92,7 @@ fn main() {
         for _ in 0..reps {
             for d in &cycle {
                 let nonce = &d[5..29];
-                for slot in d[29..].chunks_exact(84) {
+                for slot in d[29..].as_chunks::<84>().0 {
                     for c in &ciphers {
                         let _ = c.decrypt(
                             XNonce::from_slice(nonce),

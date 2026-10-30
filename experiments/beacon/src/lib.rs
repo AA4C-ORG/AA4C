@@ -270,7 +270,7 @@ impl Receiver {
             hasher.update(&nonce);
             let expected = hasher.finalize();
             let expected = expected.as_bytes().get(..LABEL_LEN).unwrap_or_default();
-            for slot in body.chunks_exact(SLOT_LEN) {
+            for slot in body.as_chunks::<SLOT_LEN>().0 {
                 let (slot_label, sealed) = slot.split_at(LABEL_LEN);
                 if slot_label != expected {
                     continue;
